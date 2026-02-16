@@ -1,5 +1,8 @@
 package com.example.book_service.datastructure;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class DummyST< KEY, VALUE> implements ST< KEY, VALUE>{
     @Override
     public void put(KEY key, VALUE value) {
