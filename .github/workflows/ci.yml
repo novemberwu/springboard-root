@@ -20,6 +20,8 @@ jobs:
         distribution: 'temurin'
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: 8.9
     - name: Build with Gradle
       run: ./gradlew build
       working-directory: ./book-service
