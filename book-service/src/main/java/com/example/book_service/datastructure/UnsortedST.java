@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 @Component
-public class UnsortedST <KEY, VALUE> implements ST<KEY , VALUE>{
+public class UnsortedST <KEY extends Comparable<KEY>, VALUE> implements ST<KEY, VALUE>{
 
     private KEY[] keys;
     private VALUE[] values;
@@ -15,7 +15,7 @@ public class UnsortedST <KEY, VALUE> implements ST<KEY , VALUE>{
     static private final int DEFAULT_SIZE = 10;
 
     public UnsortedST(int capacity){
-       keys = (KEY[])new Object[capacity];
+       keys = (KEY[])new Comparable[capacity];
        values = (VALUE[]) new Object[capacity];
        size = 0;
     }
