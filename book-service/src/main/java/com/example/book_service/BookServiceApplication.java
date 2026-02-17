@@ -7,24 +7,36 @@ import com.example.book_service.parser.CSVParser;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @SpringBootApplication
 public class BookServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BookServiceApplication.class, args);
-	}
-
-    @Bean
-    public ST<String, BookReview> reviewStorage() throws IOException {
-        ST<String, BookReview> st = new UnsortedST<>();
-        List<BookReview> bookReviews = CSVParser.parse("src/main/resources/data/books.csv");
-        for (BookReview review : bookReviews) {
-            st.put(review.getId(), review);
-        }
-        return st;
-    }
-}
+	    private final ResourceLoader resourceLoader;
+	
+	    public BookServiceApplication(ResourceLoader resourceLoader) {
+	        this.resourceLoader = resourceLoader;
+	    }
+	
+		public static void main(String[] args) {
+			SpringApplication.run(BookServiceApplication.class, args);
+		}
+	
+		@Bean
+		public ST<String, BookReview> reviewStorage() throws IOException {
+			ST<String, BookReview> st = new UnsortedST<>();
+	        String resourcePath = "classpath:data/books.csv";
+	        Resource resource = resourceLoader.getResource(resourcePath);
+	        try (InputStream inputStream = resource.getInputStream()) {
+	            List<BookReview> bookReviews = CSVParser.parse(inputStream, resourcePath);
+	            for (BookReview review : bookReviews) {
+	                st.put(review.getId(), review);
+	            }
+	        }
+			return st;
+		}}

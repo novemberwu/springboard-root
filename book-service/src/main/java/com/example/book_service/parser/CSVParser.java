@@ -10,18 +10,18 @@ import java.util.List;
 
 public class CSVParser {
 
-    public static List<BookReview> parse(String filePath) throws IOException {
+    public static List<BookReview> parse(java.io.InputStream inputStream, String filePath) throws IOException {
         List<BookReview> bookReviews = new ArrayList<>();
         String line = "";
-        String cvsSplitBy = ",";
+        String cvsSplitBy = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"; // Regex to handle commas within quotes
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader br = new BufferedReader(new java.io.InputStreamReader(inputStream))) {
             // Skip header
             br.readLine();
 
             while ((line = br.readLine()) != null) {
                 try {
-                    String[] bookData = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+                    String[] bookData = line.split(cvsSplitBy, -1);
                     BookReview bookReview = new BookReview();
                     bookReview.setId(bookData[0]);
                     bookReview.setBookTitle(bookData[1]);
@@ -29,11 +29,10 @@ public class CSVParser {
                     bookReview.setBookIsbn(bookData[4]);
                     bookReviews.add(bookReview);
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                    System.err.println("Skipping malformed line: " + line);
+                    System.err.println("Skipping malformed line in " + filePath + ": " + line);
                 }
             }
         }
-
         return bookReviews;
     }
 }
