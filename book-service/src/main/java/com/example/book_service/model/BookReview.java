@@ -6,12 +6,11 @@ import lombok.Data;
 public class BookReview implements Comparable<BookReview> {
     private String id;
     private String bookTitle;
-    private String bookId;
+    private String bookIsbn;
     private double rating;
-    private String reviewText;
 
     @Override
     public int compareTo(BookReview that) {
-        return this.bookId.compareTo(that.bookId);
+        return this.bookIsbn.compareTo(that.bookIsbn);
     }
 }

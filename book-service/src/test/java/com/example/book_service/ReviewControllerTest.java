@@ -29,7 +29,6 @@ public class ReviewControllerTest {
         review.setId("123");
         review.setBookTitle("Test Book");
         review.setRating(5.0);
-        review.setReviewText("Excellent book!");
         when(reviewStorage.get("123")).thenReturn(review);
 
         mockMvc.perform(get("/api/reviews/123"))
