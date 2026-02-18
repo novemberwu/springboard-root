@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-@Component
+
 public class UnsortedST <KEY extends Comparable<KEY>, VALUE> implements ST<KEY, VALUE>{
 
     private KEY[] keys;

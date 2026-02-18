@@ -1,7 +1,10 @@
 package com.example.book_service.datastructure;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Arrays;
 
+@Component
 public class SortedST<KEY extends Comparable<KEY>, VALUE> implements ST<KEY,VALUE>{
     private static final int INIT_CAPACITY = 2;
     private KEY[] keys;
