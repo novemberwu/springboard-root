@@ -31,6 +31,12 @@ public class UnsortedST <KEY extends Comparable<KEY>, VALUE> implements ST<KEY, 
 
     @Override
     public void put(KEY key, VALUE value) {
+        if (key == null) throw new IllegalArgumentException("key cannot be null");
+        if (value == null) {
+            delete(key);
+            return;
+        }
+
         for (int i = 0; i < size; i++) {
             if (key.equals(keys[i])) {
                 values[i] = value;
@@ -47,6 +53,7 @@ public class UnsortedST <KEY extends Comparable<KEY>, VALUE> implements ST<KEY, 
 
     @Override
     public VALUE get(KEY key) {
+        if (key == null) throw new IllegalArgumentException("key cannot be null");
         for (int i = 0; i < size; i++) {
             if (key.equals(keys[i])) {
                 return values[i];

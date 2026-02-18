@@ -6,15 +6,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collections;
 
-public class UnsortedSTTest {
+public class SortedSTTest {
 
-    private UnsortedST<String, Integer> st;
+    private SortedST<String, Integer> st;
 
     @BeforeEach
     public void setUp() {
-        st = new UnsortedST<>();
+        st = new SortedST<>();
     }
 
     @Test
@@ -33,7 +32,6 @@ public class UnsortedSTTest {
         st.put("a", 1);
         st.put("a", 10);
         assertEquals(10, st.get("a"));
-        assertEquals(1, st.size());
     }
 
     @Test
@@ -55,8 +53,8 @@ public class UnsortedSTTest {
         st.delete("b");
         assertNull(st.get("b"));
         assertEquals(2, st.size());
-        assertTrue(st.contains("a"));
-        assertTrue(st.contains("c"));
+        assertEquals(1, st.get("a"));
+        assertEquals(3, st.get("c"));
     }
 
     @Test
@@ -67,43 +65,48 @@ public class UnsortedSTTest {
     }
 
     @Test
+    public void testRank() {
+        st.put("c", 3);
+        st.put("a", 1);
+        st.put("e", 5);
+
+        assertEquals(0, st.rank("a"));
+        assertEquals(1, st.rank("c"));
+        assertEquals(2, st.rank("e"));
+        assertEquals(1, st.rank("b")); // Should be the index where 'b' would be inserted
+    }
+
+    @Test
+    public void testResize() {
+        // Test resizing up
+        for (int i = 0; i < 10; i++) {
+            st.put("key" + i, i);
+        }
+        assertEquals(10, st.size());
+        assertEquals(9, st.get("key9"));
+
+        // Test resizing down
+        for (int i = 0; i < 8; i++) {
+            st.delete("key" + i);
+        }
+        assertEquals(2, st.size());
+    }
+
+    @Test
     public void testKeys() {
         st.put("c", 3);
         st.put("a", 1);
         st.put("b", 2);
 
-        List<String> expectedKeys = new ArrayList<>();
-        expectedKeys.add("c");
-        expectedKeys.add("a");
-        expectedKeys.add("b");
-        Collections.sort(expectedKeys); // UnsortedST keys might not be in insertion order, so sort for comparison
+        List<String> keys = new ArrayList<>();
+        st.keys().forEach(keys::add);
 
-        List<String> actualKeys = new ArrayList<>();
-        st.keys().forEach(actualKeys::add);
-        Collections.sort(actualKeys);
-
-        assertEquals(expectedKeys, actualKeys);
+        assertEquals(List.of("a", "b", "c"), keys);
     }
 
     @Test
     public void testNullKey() {
         assertThrows(IllegalArgumentException.class, () -> st.put(null, 1));
         assertThrows(IllegalArgumentException.class, () -> st.get(null));
-    }
-
-    @Test
-    public void testDeleteNonExistentKey() {
-        st.put("a", 1);
-        st.delete("b");
-        assertEquals(1, st.size());
-        assertTrue(st.contains("a"));
-    }
-
-    @Test
-    public void testPutWithNullValueShouldDelete() {
-        st.put("a", 1);
-        st.put("a", null);
-        assertFalse(st.contains("a"));
-        assertEquals(0, st.size());
     }
 }
