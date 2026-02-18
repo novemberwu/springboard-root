@@ -27,6 +27,7 @@ public class CSVParser {
                     bookReview.setBookTitle(bookData[1]);
                     bookReview.setRating(Double.parseDouble(bookData[3]));
                     bookReview.setBookIsbn(bookData[4]);
+                    bookReview.setBookIsbn13(bookData[5]);
                     bookReviews.add(bookReview);
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                     System.err.println("Skipping malformed line in " + filePath + ": " + line);

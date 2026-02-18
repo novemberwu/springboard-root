@@ -35,7 +35,7 @@ public class BookServiceApplication {
 	        try (InputStream inputStream = resource.getInputStream()) {
 	            List<BookReview> bookReviews = CSVParser.parse(inputStream, resourcePath);
 	            for (BookReview review : bookReviews) {
-	                st.put(review.getId(), review);
+	                st.put(review.getBookIsbn13(), review);
 	            }
 	        }
 			return st;

@@ -29,9 +29,10 @@ public class ReviewControllerTest {
         review.setId("123");
         review.setBookTitle("Test Book");
         review.setRating(5.0);
-        when(reviewStorage.get("123")).thenReturn(review);
+        review.setBookIsbn13("1234567898765");
+        when(reviewStorage.get("1234567898765")).thenReturn(review);
 
-        mockMvc.perform(get("/api/reviews/123"))
+        mockMvc.perform(get("/api/reviews/1234567898765"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Test Book")));
     }
